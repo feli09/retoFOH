@@ -1,7 +1,7 @@
 package com.example.retofoh.ui.Fragments
 
 import android.app.Activity
-import android.content.Context
+import android.app.Dialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -9,12 +9,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.retofoh.R
 import com.example.retofoh.databinding.FragmentLoginBinding
@@ -22,16 +20,14 @@ import com.example.retofoh.util.PreferenceManager
 import com.example.retofoh.util.constants.DNNI
 import com.example.retofoh.util.constants.EMEAL
 import com.example.retofoh.util.constants.NAME
-import com.example.retofoh.util.constants.PREFERENCE_NAME
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 
 class LoginFragment : Fragment() {
@@ -40,6 +36,9 @@ class LoginFragment : Fragment() {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var googleSignInClient: GoogleSignInClient
+    private var customDialog: Dialog? = null
+
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -119,14 +118,32 @@ class LoginFragment : Fragment() {
                 preferenceManager.saveData(NAME, account.displayName.toString())
                 preferenceManager.saveData(EMEAL, account.email.toString())
                 preferenceManager.saveData(DNNI, binding?.editextCorreo.toString())
-                findNavController().navigate(
-                    LoginFragmentDirections.actionLoginFragmentToCandyStoreFragment()
-                )
+                popUpWelcom(account.displayName.toString())
             } else {
                 Toast.makeText(requireActivity(), it.exception.toString(), Toast.LENGTH_SHORT)
                     .show()
             }
 
         }
+    }
+
+    private fun popUpWelcom(name: String){
+        customDialog = Dialog(requireActivity(), R.style.CustomAlertDialog)
+        customDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        customDialog!!.setCancelable(false)
+        customDialog!!.setContentView(R.layout.fragment_welcom)
+
+        val tvTitle = customDialog!!.findViewById<TextView>(R.id.name) as TextView
+        val btnNext = customDialog!!.findViewById<MaterialButton>(R.id.next_buttom) as MaterialButton
+
+        tvTitle.setText(name)
+        btnNext.setOnClickListener {
+            findNavController().navigate(
+                LoginFragmentDirections.actionLoginFragmentToCandyStoreFragment()
+            )
+            customDialog!!.dismiss()
+
+        }
+        customDialog!!.show()
     }
 }

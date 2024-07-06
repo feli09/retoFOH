@@ -9,7 +9,6 @@ import com.example.retofoh.util.constants.BOOLEAN_FALSE_VALUE
 
 class CandyAdapter(
     private val items: List<Combo>,
-    private val onItemClickListener: (Combo) -> Unit,
     private val onSelectionChanged: (Int, Double) -> Unit
 ) :
     RecyclerView.Adapter<CandyAdapter.ViewHolder>() {
@@ -42,8 +41,6 @@ class CandyAdapter(
                 }
                 onSelectionChanged(selectedItems.size, selectedItems.sumOf { it.price.toDouble() })
             }
-
-            itemView.setOnClickListener { onItemClickListener(item) }
         }
     }
 

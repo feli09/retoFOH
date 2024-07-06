@@ -6,16 +6,64 @@
     android:layout_height="match_parent"
     tools:context=".ui.Fragments.LoginFragment">
 
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/iconlogogoogle"
+        android:layout_marginTop="@dimen/dimen_50dp"
+        app:layout_constraintBottom_toTopOf="@id/textImputCorreo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.2" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/textImputCorreo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        app:layout_constraintBottom_toTopOf="@id/materialButtonInvitado"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editextCorreo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number"
+            android:hint="@string/hint_edit_dni" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/materialButtonInvitado"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/text_btn_invitadio"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/materialButtonLogin"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <com.google.android.material.button.MaterialButton
         android:id="@+id/materialButtonLogin"
         android:enabled="false"
         android:clickable="false"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:text="Sign In"
+        android:text="@string/text_btn_login"
         android:textColor="@color/white"
         android:textStyle="bold"
         app:icon="@drawable/iconlogogoogle"
@@ -25,51 +73,8 @@
         app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/materialButtonInvitado"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Entrar como invitado"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:layout_marginStart="24dp"
-        android:layout_marginEnd="24dp"
-        app:iconTint="@color/white"
-        tools:layout_editor_absoluteX="45dp"
-        tools:layout_editor_absoluteY="600dp"
-        tools:ignore="MissingConstraints" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/iconlogogoogle"
-        app:layout_constraintBottom_toTopOf="@+id/materialButtonLogin"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.213" />
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/textImputCorreo"
-        android:layout_width="315dp"
-        android:layout_height="60dp"
-        app:layout_constraintBottom_toTopOf="@+id/materialButtonLogin"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        tools:layout_editor_absoluteX="45dp"
-        tools:ignore="MissingConstraints">
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/editextCorreo"
-            android:layout_width="313dp"
-            android:layout_height="match_parent"
-            android:inputType="number"
-            android:hint="DNI:" />
-    </com.google.android.material.textfield.TextInputLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

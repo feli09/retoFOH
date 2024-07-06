@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,7 +10,6 @@
         android:id="@+id/name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Loading...."
         android:textSize="30sp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,21 +17,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintVertical_bias="0.212"/>
-    
-    <Button
-        android:id="@+id/logout_buttom"
-        android:layout_width="wrap_content"
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/next_buttom"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
         android:layout_marginTop="@dimen/dimen_132dp"
-        android:text="logout"
-        android:background="@color/red"
+        android:layout_marginBottom="16dp"
+        android:text="@string/text_btn_dialog"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:backgroundTint="@color/colorPrimary"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintTop_toBottomOf="@+id/name"/>
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

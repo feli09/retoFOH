@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+<string-array name="document_types_array">
+    <item>DNI</item>
+    <item>Pasaporte</item>
+    <item>Carnet de extranjería</item>
+</string-array>
+</resources>

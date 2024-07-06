@@ -8,7 +8,8 @@ object constants {
     const val CERO_VALUE = 0
     const val ONE_VALUE = 1
     const val PREFERENCE_NAME = "RETOFOH_PREFERENCE"
-    const val NAME = "RETOFOH_PREFERENCE"
-    const val EMEAL = "RETOFOH_PREFERENCE"
-    const val DNNI = "RETOFOH_PREFERENCE"
+    const val NAME = "NAME"
+    const val EMEAL = "EMEAL"
+    const val DNNI = "DNNI"
+    const val PRICE = "PRICE"
 }
