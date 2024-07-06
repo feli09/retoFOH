@@ -26,9 +26,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.tasks.Task
 import com.google.android.material.button.MaterialButton
+import com.google.firebase.FirebaseApp
+import com.google.firebase.appcheck.FirebaseAppCheck
+import com.google.firebase.appcheck.playintegrity.PlayIntegrityAppCheckProviderFactory
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
@@ -38,26 +40,30 @@ class LoginFragment : Fragment() {
     private lateinit var googleSignInClient: GoogleSignInClient
     private var customDialog: Dialog? = null
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        return FragmentLoginBinding.inflate(layoutInflater).apply {
+        return FragmentLoginBinding.inflate(inflater, container, false).apply {
             _binding = this
         }.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        FirebaseApp.initializeApp(requireContext())
+        FirebaseAppCheck.getInstance().installAppCheckProviderFactory(
+            PlayIntegrityAppCheckProviderFactory.getInstance()
+        )
+
         auth = FirebaseAuth.getInstance()
-        val gson = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken(getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
 
-        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gson)
+        googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
         setUpView()
     }
 
@@ -74,19 +80,20 @@ class LoginFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {}
         })
 
-        binding?.materialButtonInvitado?.setOnClickListener{
+        binding?.materialButtonInvitado?.setOnClickListener {
             val preferenceManager = PreferenceManager(requireContext())
             preferenceManager.saveData(DNNI, binding?.editextCorreo?.text.toString())
             findNavController().navigate(
                 LoginFragmentDirections.actionLoginFragmentToCandyStoreFragment()
             )
         }
+
         binding?.materialButtonLogin?.setOnClickListener {
-            sigInGoogle()
+            signInGoogle()
         }
     }
 
-    private fun sigInGoogle() {
+    private fun signInGoogle() {
         val signInIntent = googleSignInClient.signInIntent
         launcher.launch(signInIntent)
     }
@@ -111,39 +118,41 @@ class LoginFragment : Fragment() {
     }
 
     private fun updateUI(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.id, null)
+        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
         auth.signInWithCredential(credential).addOnCompleteListener {
             if (it.isSuccessful) {
                 val preferenceManager = PreferenceManager(requireContext())
                 preferenceManager.saveData(NAME, account.displayName.toString())
                 preferenceManager.saveData(EMEAL, account.email.toString())
-                preferenceManager.saveData(DNNI, binding?.editextCorreo.toString())
-                popUpWelcom(account.displayName.toString())
+                preferenceManager.saveData(DNNI, binding?.editextCorreo?.text.toString())
+                popUpWelcome(account.displayName ?: account.displayName.toString())
             } else {
-                Toast.makeText(requireActivity(), it.exception.toString(), Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(requireActivity(), it.exception.toString(), Toast.LENGTH_SHORT).show()
             }
-
         }
     }
 
-    private fun popUpWelcom(name: String){
+    private fun popUpWelcome(name: String) {
         customDialog = Dialog(requireActivity(), R.style.CustomAlertDialog)
-        customDialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
-        customDialog!!.setCancelable(false)
-        customDialog!!.setContentView(R.layout.fragment_welcom)
+        customDialog?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        customDialog?.setCancelable(false)
+        customDialog?.setContentView(R.layout.fragment_welcom)
 
-        val tvTitle = customDialog!!.findViewById<TextView>(R.id.name) as TextView
-        val btnNext = customDialog!!.findViewById<MaterialButton>(R.id.next_buttom) as MaterialButton
+        val tvTitle = customDialog?.findViewById<TextView>(R.id.name)
+        val btnNext = customDialog?.findViewById<MaterialButton>(R.id.next_buttom)
 
-        tvTitle.setText(name)
-        btnNext.setOnClickListener {
+        tvTitle?.text = name
+        btnNext?.setOnClickListener {
             findNavController().navigate(
                 LoginFragmentDirections.actionLoginFragmentToCandyStoreFragment()
             )
-            customDialog!!.dismiss()
-
+            customDialog?.dismiss()
         }
-        customDialog!!.show()
+        customDialog?.show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
