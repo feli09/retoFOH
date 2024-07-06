@@ -11,12 +11,20 @@ import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import com.example.retofoh.R
 import com.example.retofoh.databinding.FragmentPayBinding
+import com.example.retofoh.domain.model.AdditionalValues
 import com.example.retofoh.domain.model.Complete
-import com.example.retofoh.ui.ViewModel.PremierViewModel
+import com.example.retofoh.domain.model.CreditCardInfo
+import com.example.retofoh.domain.model.MerchantInfo
+import com.example.retofoh.domain.model.OrderInfo
+import com.example.retofoh.domain.model.PayerInfo
+import com.example.retofoh.domain.model.PaymentTransaction
+import com.example.retofoh.domain.model.TransactionInfo
+import com.example.retofoh.domain.model.TxValue
 import com.example.retofoh.ui.ViewModel.PayViewModel
 import com.example.retofoh.ui.satate.ViewState
 import com.example.retofoh.util.PreferenceManager
 import com.example.retofoh.util.constants
+
 
 class PayFragment : Fragment() {
 
@@ -25,6 +33,11 @@ class PayFragment : Fragment() {
 
     private var dialog: AlertDialog? = null
     private lateinit var payViewModel: PayViewModel
+    private var name: String = ""
+    private var dni: String = ""
+    private var email: String = ""
+    private var currency: String = ""
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,6 +67,9 @@ class PayFragment : Fragment() {
                         )
                     }
                 }
+                is ViewState.responsePayU -> {
+                    goComplete(state.paymentResponse.transactionResponse.operationDate.toString())
+                }
                 else -> Unit
             }
         }
@@ -67,9 +83,7 @@ class PayFragment : Fragment() {
     }
 
     private fun validatePayU() {
-
-
-        goComplete("123456789")
+        payViewModel.potPayupaymentTransaction(createPaymentTransaction())
     }
 
     private fun goComplete(operationDate: String) {
@@ -85,11 +99,10 @@ class PayFragment : Fragment() {
     private fun loadAndSetPreferences() {
         val preferenceManager = PreferenceManager(requireContext())
 
-        val name = preferenceManager.getData(constants.NAME).toString()
-        val dni = preferenceManager.getData(constants.DNNI).toString()
-        val email = preferenceManager.getData(constants.EMEAL).toString()
-        val currency = preferenceManager.getData(constants.PRICE).toString()
-
+        name = preferenceManager.getData(constants.NAME).toString()
+        dni = preferenceManager.getData(constants.DNNI).toString()
+        email = preferenceManager.getData(constants.EMEAL).toString()
+        currency = preferenceManager.getData(constants.PRICE).toString()
         binding?.textViewTotalAmount?.setText("Total a cobrar: ${currency}")
 
         if (!name.isNullOrEmpty()) {
@@ -132,5 +145,49 @@ class PayFragment : Fragment() {
         }
         dialog = builder.create()
         dialog!!.show()
+    }
+
+    fun createPaymentTransaction(): PaymentTransaction {
+        val transaction = TransactionInfo(
+            order = OrderInfo(
+                language = "es",
+                additionalValues = AdditionalValues(
+                    TX_VALUE = TxValue(
+                        value = currency,
+                        currency = "PEN"
+                    )
+                )
+            ),
+            payer = PayerInfo(
+                fullName = name,
+                emailAddress = email,
+                contactPhone = "998877665",
+                dniNumber = dni
+            ),
+            creditCard = CreditCardInfo(
+                number = binding?.editTextCardNumber?.text.toString(),
+                securityCode = binding?.editTextCVV?.text.toString(),
+                expirationDate = binding?.editTextExpiryDate?.text.toString(),
+                name = "APPROVED"
+            ),
+            type = "AUTHORIZATION",
+            paymentMethod = "VISA",
+            paymentCountry = "PE"
+        )
+
+        val merchant = MerchantInfo(
+            apiKey = "4Vj8eK4rloUd272L48hsrarnUA",
+            apiLogin = "pRRXKOl8ikMmt9u"
+        )
+
+        val paymentTransaction = PaymentTransaction(
+            test = true,
+            language = "es",
+            command = "SUBMIT_TRANSACTION",
+            merchant = merchant,
+            transaction = transaction
+        )
+
+        return paymentTransaction
     }
 }

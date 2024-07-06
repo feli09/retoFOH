@@ -62,7 +62,7 @@ class CandyStoreFragment : Fragment() {
         binding?.btnAction?.setOnClickListener {
             if (price > 0.0){
                 val preferenceManager = PreferenceManager(requireContext())
-                preferenceManager.saveData(constants.PRICE, textprice)
+                preferenceManager.saveData(constants.PRICE, price.toString())
                 findNavController().navigate(
                     CandyStoreFragmentDirections.actionCandyStoreFragmentToPayFragment()
                 )

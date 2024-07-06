@@ -5,13 +5,16 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.retofoh.data.repository.PayRepository
+import com.example.retofoh.data.repository.PayURepository
 import com.example.retofoh.domain.model.Complete
+import com.example.retofoh.domain.model.PaymentTransaction
 import com.example.retofoh.ui.satate.ViewState
 import kotlinx.coroutines.launch
 
 class PayViewModel() : ViewModel() {
 
     private val repository = PayRepository()
+    private val payURepository = PayURepository()
 
     private var _eventState = MutableLiveData<ViewState>()
     var eventState: LiveData<ViewState> = _eventState
@@ -20,6 +23,12 @@ class PayViewModel() : ViewModel() {
     fun potComplete(complete: Complete){
         viewModelScope.launch {
             _eventState.value = ViewState.responseComplete(repository.postComplete(complete))
+        }
+    }
+
+    fun potPayupaymentTransaction(paymentTransaction: PaymentTransaction){
+        viewModelScope.launch {
+            _eventState.value = ViewState.responsePayU(payURepository.postPayU(paymentTransaction))
         }
     }
 
