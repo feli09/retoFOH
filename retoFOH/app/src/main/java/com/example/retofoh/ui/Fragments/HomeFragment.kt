@@ -8,15 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.viewpager2.widget.ViewPager2
 import com.example.retofoh.databinding.FragmentHomeBinding
 import com.example.retofoh.domain.model.movie
 import com.example.retofoh.ui.Adapter.MovieAdapter
 import com.example.retofoh.ui.ViewModel.PremierViewModel
 import com.example.retofoh.ui.satate.ViewState
+import com.example.retofoh.util.PreferenceManager
 import com.example.retofoh.util.configurePagerProperties
 import com.example.retofoh.util.constants.BOOLEAN_TRUE_VALUE
 import com.example.retofoh.util.constants.CERO_VALUE
+import com.example.retofoh.util.constants.EMEAL
 import com.example.retofoh.util.constants.ONE_VALUE
 import com.example.retofoh.util.handlePageScrollStateChange
 
@@ -29,6 +32,7 @@ class HomeFragment : Fragment() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var runnable: Runnable
     private var currentPage = CERO_VALUE
+    private var email: String = ""
 
     val binding get() = _binding
     override fun onCreateView(
@@ -60,6 +64,8 @@ class HomeFragment : Fragment() {
         }
     }
     private fun setUpView() {
+        val preferenceManager = PreferenceManager(requireContext())
+        email = preferenceManager.getData(EMEAL).toString()
         premierViewModel.getPremier()
     }
 
@@ -73,9 +79,9 @@ class HomeFragment : Fragment() {
     private fun setupViewPager(listmovie: List<movie>) {
         binding?.rvPremiereInclude?.movieViewPager2?.apply {
             adapter = MovieAdapter(listmovie) { item ->
-
+                onItemClicked(item)
             }
-            setCurrentItem(0, false)
+            setCurrentItem(CERO_VALUE, false)
             configurePagerProperties(listmovie.size)
             registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
                 override fun onPageSelected(position: Int) {
@@ -110,14 +116,18 @@ class HomeFragment : Fragment() {
         stopAutoScroll()
     }
 
-    private fun setUpAdapter(items: List<movie>) {
-        //val adapter = MovieAdapter(items, this::onItemClicked)
-
-        //binding?.rvPremiere?.adapter = adapter
-        //binding?.rvPremiere?.layoutManager = LinearLayoutManager(requireContext())
-    }
-
     private fun onItemClicked(item: movie) {
-
+        println("emeal: "+email)
+        if(email.isNullOrEmpty()){
+            println("1 ")
+            findNavController().navigate(
+                HomeFragmentDirections.actionGoHomeFragmentToLoginFragment()
+            )
+        }else{
+            println("2 ")
+            findNavController().navigate(
+                HomeFragmentDirections.actionGoHomeFragmentToCandyStoreFragment()
+            )
+        }
     }
 }

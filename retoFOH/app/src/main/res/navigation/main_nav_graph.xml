@@ -18,18 +18,38 @@
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+            android:id="@+id/action_goHomeFragment_to_candyStoreFragment"
+            app:destination="@id/candyStoreFragmentNav"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment android:id="@+id/candyStoreFragmentNav"
         android:name="com.example.retofoh.ui.Fragments.CandyStoreFragment"
         tools:layout="@layout/fragment_candy_store">
-
+        <action
+            android:id="@+id/action_candyStoreFragment_to_payFragment"
+            app:destination="@id/payFragmentNav"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment android:id="@+id/loginFragmentNav"
         android:name="com.example.retofoh.ui.Fragments.LoginFragment"
         tools:layout="@layout/fragment_login">
-
+        <action
+            android:id="@+id/action_loginFragment_to_candyStoreFragment"
+            app:destination="@id/candyStoreFragmentNav"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
     </fragment>
 
     <fragment android:id="@+id/payFragmentNav"

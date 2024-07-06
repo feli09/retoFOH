@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "787420096468",
+    "project_id": "retofoh",
+    "storage_bucket": "retofoh.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:787420096468:android:2788c489551e440979d841",
+        "android_client_info": {
+          "package_name": "com.example.retofoh"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "787420096468-1289m5ds2at2me7enrt4vmtildagg4m4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.retofoh",
+            "certificate_hash": "70f09fc91f981ff1070d789ebbebea5ac9ff08ee"
+          }
+        },
+        {
+          "client_id": "787420096468-j5bj3dbtpv3g0qkudggn9mkej4qv068n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsqLqEFqFN7qM-z3is8TKwcifWH-paDDs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "787420096468-j5bj3dbtpv3g0qkudggn9mkej4qv068n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

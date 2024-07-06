@@ -19,12 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun setUpView() {
-        val navigationController =
-            Navigation.findNavController(this, R.id.mainNavHostFragment)
-        navigationController.navigate(R.id.homeFragmentNav, intent.extras)
-    }
-
     override fun onSupportNavigateUp(): Boolean {
         return if (navController.currentDestination?.id == R.id.homeFragmentNav) {
             navController.popBackStack(R.id.homeFragmentNav,false )
