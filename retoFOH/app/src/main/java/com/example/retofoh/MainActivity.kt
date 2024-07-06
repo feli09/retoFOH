@@ -22,12 +22,12 @@ class MainActivity : AppCompatActivity() {
     private fun setUpView() {
         val navigationController =
             Navigation.findNavController(this, R.id.mainNavHostFragment)
-        navigationController.navigate(R.id.candyStoreFragmentNav, intent.extras)
+        navigationController.navigate(R.id.homeFragmentNav, intent.extras)
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return if (navController.currentDestination?.id == R.id.candyStoreFragmentNav) {
-            navController.popBackStack(R.id.candyStoreFragmentNav,false )
+        return if (navController.currentDestination?.id == R.id.homeFragmentNav) {
+            navController.popBackStack(R.id.homeFragmentNav,false )
             true
         } else {
             navController.navigateUp()
@@ -35,7 +35,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        if (navController.currentDestination?.id == R.id.candyStoreFragmentNav) {
+        if (navController.currentDestination?.id == R.id.homeFragmentNav) {
             setResult(Activity.RESULT_CANCELED)
             finish()
         } else super.onBackPressed()
