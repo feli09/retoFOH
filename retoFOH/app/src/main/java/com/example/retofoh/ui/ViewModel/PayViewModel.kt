@@ -21,15 +21,19 @@ class PayViewModel() : ViewModel() {
 
 
     fun potComplete(complete: Complete){
+        _eventState.value = ViewState.ShowLoader
         viewModelScope.launch {
             _eventState.value = ViewState.responseComplete(repository.postComplete(complete))
         }
+        _eventState.value = ViewState.HideLoader
     }
 
     fun potPayupaymentTransaction(paymentTransaction: PaymentTransaction){
+        _eventState.value = ViewState.ShowLoader
         viewModelScope.launch {
             _eventState.value = ViewState.responsePayU(payURepository.postPayU(paymentTransaction))
         }
+        _eventState.value = ViewState.HideLoader
     }
 
 }

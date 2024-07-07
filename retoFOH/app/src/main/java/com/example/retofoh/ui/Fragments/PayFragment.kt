@@ -58,6 +58,12 @@ class PayFragment : Fragment() {
     private fun setObserver() {
         payViewModel.eventState.observe(requireActivity()) { state ->
             when (state) {
+                is ViewState.ShowLoader ->{
+                    binding?.progressBar?.visibility = View.VISIBLE
+                }
+                is ViewState.HideLoader ->{
+                    binding?.progressBar?.visibility = View.GONE
+                }
                 is ViewState.responseComplete ->{
                     println("Code: " + state.reponseComplete.resul_code)
                     if(state.reponseComplete.resul_code.equals("0")) {
@@ -78,7 +84,11 @@ class PayFragment : Fragment() {
         setupDocumentTypeSpinner(binding!!.spinnerDocumentType)
         loadAndSetPreferences()
         binding?.buttonContinue?.setOnClickListener {
-            validatePayU()
+            if (validateFields()) {
+                validatePayU()
+            }else{
+                showMessageValid(getString(R.string.text_title_alert_pay_valid), getString(R.string.text_message_alert_pay_valid))
+            }
         }
     }
 
@@ -147,6 +157,18 @@ class PayFragment : Fragment() {
         dialog!!.show()
     }
 
+    private fun showMessageValid(title: String, message: String) {
+        val builder = AlertDialog.Builder(requireActivity())
+        builder.setCancelable(false)
+        builder.setTitle(title)
+        builder.setMessage(message)
+        builder.setPositiveButton("Aceptar") { _, _ ->
+            dialog!!.dismiss()
+        }
+        dialog = builder.create()
+        dialog!!.show()
+    }
+
     fun createPaymentTransaction(): PaymentTransaction {
         val transaction = TransactionInfo(
             order = OrderInfo(
@@ -189,5 +211,17 @@ class PayFragment : Fragment() {
         )
 
         return paymentTransaction
+    }
+
+    private fun validateFields(): Boolean {
+        val cardNumber = binding?.editTextCardNumber?.text.toString().trim()
+        val cvv = binding?.editTextCVV?.text.toString().trim()
+        val expiryDate = binding?.editTextExpiryDate?.text.toString().trim()
+        val name = binding?.editTextName?.text.toString().trim()
+        val dni = binding?.editTextDocumentNumber?.text.toString().trim()
+        val email = binding?.editTextEmail?.text.toString().trim()
+
+        return cardNumber.isNotEmpty() && cvv.isNotEmpty() && expiryDate.isNotEmpty() &&
+                name.isNotEmpty() && dni.isNotEmpty() && email.isNotEmpty()
     }
 }
